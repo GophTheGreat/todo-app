@@ -1,3 +1,4 @@
+import { DOM_INITIALIZE } from './modules/domevents';
 import './style.css'
 
 
@@ -6,7 +7,7 @@ function init(){
   //put an example todo in the inbox
 
 
-
+  DOM_INITIALIZE();
 }
 
 init();
