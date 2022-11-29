@@ -13,6 +13,7 @@ export function makeProject (title, priority){
   project = new Project(title, priority);
 
   console.log("adding project")
+  console.log(project);
   addToSidebar(project);
 
 }
