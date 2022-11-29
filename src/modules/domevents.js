@@ -55,7 +55,7 @@ function showProjectForm(){
   priority.min = "1";
   priority.max = "10";
   priority.value = "10";
-  priority.setAttribute("onchange", "(function() {document.getElementById('priorityDisplay').innerHTML = document.getElementById('priority').value})();");
+  priority.setAttribute("onchange", "updateRangeDisplay()");
   console.log(priority);
   form.appendChild(priority);
   let priorityDisplay = document.createElement("label")
@@ -73,8 +73,6 @@ function showProjectForm(){
   navBar.appendChild(form);
 }
 
-function updateRangeDisplay(value){
-  console.log("changing to " + value);
-  console.log(document.getElementById('priority'));
-  console.log(document.getElementById('priorityDisplay'));
+export function updateRangeDisplay(){
+  document.getElementById('priorityDisplay').innerHTML = document.getElementById('priority').value;
 }
