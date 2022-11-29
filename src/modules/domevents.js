@@ -5,6 +5,7 @@ import { Task } from './todo';
 console.log('hi');
 export function addToSidebar(project){
   //create divs for all project pieces
+  console.log("Adding project to sidebar");
   let projectDiv = document.createElement("div")
   projectDiv.id = project._title;
 
@@ -65,12 +66,22 @@ function showProjectForm(){
   form.appendChild(priorityDisplay);
 
   let submitProject = document.createElement("button");
+  submitProject.type = "button";
   submitProject.innerHTML = "Submit";
+  submitProject.addEventListener("click", function(){makeProject(title.value, priority.value); console.log("submitted")});
+  submitProject.addEventListener("click", function(){removeForm(form)});
   form.appendChild(submitProject);
 
 
   let navBar = document.getElementById("navbar")
   navBar.appendChild(form);
+}
+
+function removeForm(form){
+  while(form.firstChild){
+    form.removeChild(form.firstChild);
+  }
+  form.remove();
 }
 
 export function updateRangeDisplay(){
