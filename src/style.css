@@ -55,17 +55,38 @@ body{
   padding-left: 15px;
 }
 
-.inbox{
+#inbox{
+  display: grid;
   background-color: rgb(46, 46, 46);
+}
+
+.buttonContainer{
+  display: grid;
 }
 
 #addProject{
   display:grid;
+  align-self: center;
   justify-self: end;
   background-image: url('../assets/plus.svg');
   background-size: 20px 20px;
   height: 20px;  
   width: 20px;
+  margin-right: 20px;
   border: none;
+  background-color: rgba(0, 0, 0, 0)
+}
+
+#addToDo{
+  display:grid;
+  justify-self: center;
+  background-image: url('../assets/plus.svg');
+  background-repeat: no-repeat;
+  background-size: 40px 40px;
+  background-position: center;
+  height: 55px;  
+  width: 90%;
+  border: 1px solid purple;
+  border-radius: 20px;
   background-color: rgba(0, 0, 0, 0)
 }
