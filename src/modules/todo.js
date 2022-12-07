@@ -19,21 +19,3 @@ export class ToDo{
   /* Implement what to do if it's a checklist */
 }
 
-export function makeToDo(title, description, dueDate, priority, notes, isChecklist){
-  let toDo;
-  toDo = new ToDo(title, description, dueDate, priority, notes, isChecklist)
-  console.log("adding toDo")
-  console.log(toDo);
-  addToInbox(toDo);
-}
-
-export function makeProject (title, priority){  
-  let project;
-
-  project = new Project(title, priority);
-
-  console.log("adding project")
-  console.log(project);
-  addToSidebar(project);
-
-}

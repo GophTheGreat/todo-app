@@ -1,11 +1,14 @@
 import { Project } from './project';
 import { makeProject } from './project';
 import { makeToDo } from './todo';
+import { activeProject } from '../index'
+import { date } from '../index'
+import { projects } from '../index'
 
 console.log('hi');
-export function addToSidebar(project){
+export function addToNavbar(project){
   //create divs for all project pieces
-  console.log("Adding project to sidebar");
+  console.log("Adding project to navbar");
   let projectDiv = document.createElement("div")
   projectDiv.id = project._title;
 
@@ -63,14 +66,15 @@ export const DOM_INITIALIZE = () => {
   console.log(button);
   button.addEventListener("click", () => {
     showProjectForm();
-    console.log("did project thing");
   });
+
+  //set active project to the default
+
   //Todo Button
   button = document.getElementById("addToDo");
   console.log(button);
   button.addEventListener("click", () => {
     showToDoForm();
-    console.log("did todo thing");
   });
 }
 
@@ -113,6 +117,7 @@ function showProjectForm(){
   submitProject.innerHTML = "Submit";
   submitProject.addEventListener("click", function(){makeProject(title.value, priority.value); console.log("submitted")});
   submitProject.addEventListener("click", function(){removeForm(form)});
+  submitProject.addEventListener("click", updateNavbar);
   form.appendChild(submitProject);
 
 
@@ -122,17 +127,18 @@ function showProjectForm(){
 
 function showToDoForm(){
   let form = document.createElement("form");
+  let defaultDate = date.getDay();
 
   form.innerHTML = `
     <h2>New Project</h2>
     <label for="title">Title<label>
-    <input type="text" name="title" id="todoTitle" maxlength="80">
+    <input type="text" name="title" id="todoTitle" maxlength="80" value="Default">
     <label for="description">Description</label>
     <input type="text" name="Description" id="todoDescription" maxlength="500">
     <label for="dueDate">Due Date</label>
-    <input type="datetime-local" name="dueDate" id="todoDueDate">
+    <input type="datetime-local" name="dueDate" id="todoDueDate" value=${defaultDate}>
     <label for="priority">Priority</label>
-    <input type="number" name="priority" id="todoPriority">
+    <input type="number" name="priority" id="todoPriority" value="10">
     <label for="notes">Notes</label>
     <input type="text" name="notes" id="todoNotes">
     <label for="isChecklist">Is this a checklist?</label>
@@ -142,18 +148,80 @@ function showToDoForm(){
   let submitToDo = document.createElement("button");
   submitToDo.type = "button";
   submitToDo.innerHTML = "Submit";
-  submitToDo.addEventListener("click", function(){makeToDo(document.getElementById("todoTitle").value, 
+  submitToDo.addEventListener("click", function(){activeProject.makeToDo(document.getElementById("todoTitle").value, 
                                                            document.getElementById("todoDescription").value,
                                                            document.getElementById("todoDueDate").value,
                                                            document.getElementById("todoPriority").value,
                                                            document.getElementById("todoNotes").value,
                                                            document.getElementById("todoChecklist").value); console.log("submitted")});
   submitToDo.addEventListener("click", function(){removeForm(form)});
+  submitToDo.addEventListener("click", updateInbox);
   form.appendChild(submitToDo);
 
   let inbox = document.getElementById("inbox")
   inbox.appendChild(form);
 }
+
+function updateInbox(){
+  let inbox = document.getElementById("inbox");
+
+  //Clear the inbox first
+  while(inbox.firstChild){
+    inbox.removeChild(inbox.firstChild);
+  }
+
+  //Populate all the toDos of the active project
+  activeProject._todos.forEach((element) => {addToInbox(element)});
+  console.log("Words"+activeProject._todos);
+
+  //Paint the 'New' button and give it a function
+  inbox.appendChild(createAddToDoButton());
+}
+
+function createAddToDoButton(){
+  console.log("creating addToDo button")
+  let buttonContainer = document.createElement("div");
+  buttonContainer.className = "buttonContainer";
+
+  let button = document.createElement("button");
+  button.id = "addToDo";
+  button.addEventListener("click", () => {
+    showToDoForm();
+  });
+
+  buttonContainer.appendChild(button);
+  return buttonContainer;
+}
+
+function updateNavbar(){
+  let navbar = document.getElementById("navbar");
+
+  //Clear the inbox first
+  while(navbar.firstChild){
+    navbar.removeChild(navbar.firstChild);
+  }
+
+  //Populate all the projects
+  projects.forEach((element) => {addToNavbar(element)});
+  console.log("Sentences"+projects);
+
+  //Paint the 'New' button and give it a function
+  navbar.appendChild(createAddProjectButton());
+}
+
+function createAddProjectButton(){
+  console.log("creating addProject button")
+  let buttonContainer = document.createElement("div");
+  buttonContainer.className = "buttonContainer";
+  let button = document.createElement("button");
+  button.id = "addProject";
+  button.addEventListener("click", () => {
+    showProjectForm();
+  });
+  buttonContainer.appendChild(button);
+  return buttonContainer;
+}
+
 
 function removeForm(form){
   while(form.firstChild){
