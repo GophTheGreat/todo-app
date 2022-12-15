@@ -57,6 +57,12 @@ export function addToInbox(todo){
 
   let inbox = document.getElementById("inbox")
   inbox.appendChild(todoDiv);
+
+  let deleteButton = document.createElement("button")
+  deleteButton.className = "deleteButton";
+  deleteButton.setAttribute("data-ToDo-id", `${todo._id}`);
+  deleteButton.addEventListener("click", function(){deleteToDo(this.getAttribute("data-ToDo-id"))});
+  inbox.appendChild(deleteButton);
 }
 
 export const DOM_INITIALIZE = () => {
@@ -222,7 +228,6 @@ function createAddProjectButton(){
   return buttonContainer;
 }
 
-
 function removeForm(form){
   while(form.firstChild){
     form.removeChild(form.firstChild);
@@ -232,4 +237,26 @@ function removeForm(form){
 
 export function updateRangeDisplay(){
   document.getElementById('priorityDisplay').innerHTML = document.getElementById('priority').value;
+}
+
+function deleteToDo(id){
+  console.log(`Deleting ToDo of ID: ${id}`);
+  //Find the index of the ToDo with the specified ID
+  console.log(`Before: `)
+  console.log(activeProject._todos);
+  let indexToRemove = activeProject._todos.findIndex((item) => {console.log(`Comparing: ${item._id} and ${id}`); if (item._id === parseInt(id)){return true;} else{return false;}});
+  if (indexToRemove < 0)
+  {
+    console.log(`Not Found`);
+    return;
+  }
+
+  console.log(`Found at index of ${indexToRemove}`);
+  //Remove it
+  activeProject._todos.splice(indexToRemove, 1);
+  console.log(`After: `)
+  console.log(activeProject._todos);
+
+  //Update the inbox
+  updateInbox();
 }

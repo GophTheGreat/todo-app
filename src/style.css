@@ -90,3 +90,19 @@ body{
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0)
 }
+
+.deleteButton{
+  display:grid;
+  justify-self: end;
+  background-image: url('../assets/minus.svg');
+  filter: invert(33%) sepia(83%) saturate(1336%) hue-rotate(325deg) brightness(94%) contrast(89%);
+  background-repeat: no-repeat;
+  background-size: 40px 40px;
+  background-position: center;
+  height: 55px;  
+  width: 90%;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0)
+}
+
+

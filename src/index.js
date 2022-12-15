@@ -4,9 +4,11 @@ import { makeProject } from './modules/project';
 import './style.css'
 
 export let date = new Date();
-export let projectIDs = [];
+export let nextProjectID = 0;
 export let projects = [];
 export let activeProject = makeProject("Default", "10");
+
+export let nextToDoID = 0;
 
 
 window.updateRangeDisplay = updateRangeDisplay;
@@ -17,7 +19,15 @@ function init(){
 
 
   DOM_INITIALIZE();
-  projects[0] = activeProject;
+  projects.push(activeProject);
 }
 
 init();
+
+export function incrementNextProjectID(){
+  nextProjectID++;
+}
+
+export function incrementNextToDoID(){
+  nextToDoID++;
+}

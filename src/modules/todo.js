@@ -1,4 +1,6 @@
+import { activeProject, nextToDoID } from "..";
 import { addToInbox } from "./domevents";
+
 
 export class ToDo{
   constructor(title, description, dueDate, priority, notes, isChecklist){
@@ -15,6 +17,7 @@ export class ToDo{
     this._priority = priority;
     this._notes = notes;
     this._isChecklist = isChecklist;
+    this._id = nextToDoID;
   }
   /* Implement what to do if it's a checklist */
 }

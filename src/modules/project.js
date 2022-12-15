@@ -1,5 +1,5 @@
 import { addToNavbar } from './domevents';
-import { projectIDs, projects } from '../index';
+import { incrementNextProjectID, incrementNextToDoID, nextProjectID, projects } from '../index';
 import { ToDo } from './todo';
 
 export class Project{
@@ -7,13 +7,7 @@ export class Project{
     this._title = title;
     this._priority = priority;
     this._todos = [];
-
-    this._projectID = 0;
-    let i = 0;
-    while(this._projectID === projectIDs[i]){
-      this._projectID++;
-    }
-    projectIDs[i] = this._projectID;
+    this._projectID = nextProjectID;
   }
 }
 
@@ -23,6 +17,7 @@ Project.prototype.makeToDo = function(title, description, dueDate, priority, not
   console.log("adding toDo")
   console.log(toDo);
   this._todos.push(toDo);
+  incrementNextToDoID();
 }
 
 export function makeProject (title, priority){  
@@ -34,5 +29,6 @@ export function makeProject (title, priority){
   console.log(project);
   addToNavbar(project);
   projects.push(project);
+  incrementNextProjectID();
   return(project);
 }
