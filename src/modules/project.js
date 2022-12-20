@@ -7,7 +7,7 @@ export class Project{
     this._title = title;
     this._priority = priority;
     this._todos = [];
-    this._projectID = nextProjectID;
+    this._id = nextProjectID;
   }
 }
 

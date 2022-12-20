@@ -6,7 +6,8 @@ import { date } from '../index'
 import { projects } from '../index'
 
 console.log('hi');
-export function addToNavbar(project){
+
+export function addToNavbar(project) {
   //create divs for all project pieces
   console.log("Adding project to navbar");
   let projectDiv = document.createElement("div")
@@ -22,9 +23,15 @@ export function addToNavbar(project){
 
   let navBar = document.getElementById("navbar")
   navBar.appendChild(projectDiv);
+
+  let deleteButton = document.createElement("button")
+  deleteButton.className = "deleteButtonSmall";
+  deleteButton.setAttribute("data-project-id", `${project._id}`);
+  deleteButton.addEventListener("click", function () { deleteProject(this.getAttribute("data-project-id")) });
+  navBar.appendChild(deleteButton);
 }
 
-export function addToInbox(todo){
+export function addToInbox(todo) {
   //create divs for all ToDo pieces
   //constructor(title, description, dueDate, priority, notes, isChecklist){
   console.log("Adding ToDo to inbox");
@@ -61,7 +68,7 @@ export function addToInbox(todo){
   let deleteButton = document.createElement("button")
   deleteButton.className = "deleteButton";
   deleteButton.setAttribute("data-ToDo-id", `${todo._id}`);
-  deleteButton.addEventListener("click", function(){deleteToDo(this.getAttribute("data-ToDo-id"))});
+  deleteButton.addEventListener("click", function () { deleteToDo(this.getAttribute("data-ToDo-id")) });
   inbox.appendChild(deleteButton);
 }
 
@@ -84,13 +91,13 @@ export const DOM_INITIALIZE = () => {
   });
 }
 
-function showProjectForm(){
+function showProjectForm() {
   let form = document.createElement("form");
-  
+
   let header = document.createElement("h2");
   header.innerHTML = "New Project";
   form.appendChild(header);
-  
+
   let titleLabel = document.createElement("label")
   titleLabel.innerHTML = "Title"
   titleLabel.name = "title"
@@ -121,8 +128,8 @@ function showProjectForm(){
   let submitProject = document.createElement("button");
   submitProject.type = "button";
   submitProject.innerHTML = "Submit";
-  submitProject.addEventListener("click", function(){makeProject(title.value, priority.value); console.log("submitted")});
-  submitProject.addEventListener("click", function(){removeForm(form)});
+  submitProject.addEventListener("click", function () { makeProject(title.value, priority.value); console.log("submitted") });
+  submitProject.addEventListener("click", function () { removeForm(form) });
   submitProject.addEventListener("click", updateNavbar);
   form.appendChild(submitProject);
 
@@ -131,7 +138,7 @@ function showProjectForm(){
   navBar.appendChild(form);
 }
 
-function showToDoForm(){
+function showToDoForm() {
   let form = document.createElement("form");
   let defaultDate = date.getDay();
 
@@ -154,13 +161,15 @@ function showToDoForm(){
   let submitToDo = document.createElement("button");
   submitToDo.type = "button";
   submitToDo.innerHTML = "Submit";
-  submitToDo.addEventListener("click", function(){activeProject.makeToDo(document.getElementById("todoTitle").value, 
-                                                           document.getElementById("todoDescription").value,
-                                                           document.getElementById("todoDueDate").value,
-                                                           document.getElementById("todoPriority").value,
-                                                           document.getElementById("todoNotes").value,
-                                                           document.getElementById("todoChecklist").value); console.log("submitted")});
-  submitToDo.addEventListener("click", function(){removeForm(form)});
+  submitToDo.addEventListener("click", function () {
+    activeProject.makeToDo(document.getElementById("todoTitle").value,
+      document.getElementById("todoDescription").value,
+      document.getElementById("todoDueDate").value,
+      document.getElementById("todoPriority").value,
+      document.getElementById("todoNotes").value,
+      document.getElementById("todoChecklist").value); console.log("submitted")
+  });
+  submitToDo.addEventListener("click", function () { removeForm(form) });
   submitToDo.addEventListener("click", updateInbox);
   form.appendChild(submitToDo);
 
@@ -168,23 +177,23 @@ function showToDoForm(){
   inbox.appendChild(form);
 }
 
-function updateInbox(){
+function updateInbox() {
   let inbox = document.getElementById("inbox");
 
   //Clear the inbox first
-  while(inbox.firstChild){
+  while (inbox.firstChild) {
     inbox.removeChild(inbox.firstChild);
   }
 
   //Populate all the toDos of the active project
-  activeProject._todos.forEach((element) => {addToInbox(element)});
-  console.log("Words"+activeProject._todos);
+  activeProject._todos.forEach((element) => { addToInbox(element) });
+  console.log("Words" + activeProject._todos);
 
   //Paint the 'New' button and give it a function
   inbox.appendChild(createAddToDoButton());
 }
 
-function createAddToDoButton(){
+function createAddToDoButton() {
   console.log("creating addToDo button")
   let buttonContainer = document.createElement("div");
   buttonContainer.className = "buttonContainer";
@@ -199,23 +208,23 @@ function createAddToDoButton(){
   return buttonContainer;
 }
 
-function updateNavbar(){
+function updateNavbar() {
   let navbar = document.getElementById("navbar");
 
   //Clear the inbox first
-  while(navbar.firstChild){
+  while (navbar.firstChild) {
     navbar.removeChild(navbar.firstChild);
   }
 
   //Populate all the projects
-  projects.forEach((element) => {addToNavbar(element)});
-  console.log("Sentences"+projects);
+  projects.forEach((element) => { addToNavbar(element) });
+  console.log("Sentences" + projects);
 
   //Paint the 'New' button and give it a function
   navbar.appendChild(createAddProjectButton());
 }
 
-function createAddProjectButton(){
+function createAddProjectButton() {
   console.log("creating addProject button")
   let buttonContainer = document.createElement("div");
   buttonContainer.className = "buttonContainer";
@@ -228,25 +237,24 @@ function createAddProjectButton(){
   return buttonContainer;
 }
 
-function removeForm(form){
-  while(form.firstChild){
+function removeForm(form) {
+  while (form.firstChild) {
     form.removeChild(form.firstChild);
   }
   form.remove();
 }
 
-export function updateRangeDisplay(){
+export function updateRangeDisplay() {
   document.getElementById('priorityDisplay').innerHTML = document.getElementById('priority').value;
 }
 
-function deleteToDo(id){
+function deleteToDo(id) {
   console.log(`Deleting ToDo of ID: ${id}`);
   //Find the index of the ToDo with the specified ID
   console.log(`Before: `)
   console.log(activeProject._todos);
-  let indexToRemove = activeProject._todos.findIndex((item) => {console.log(`Comparing: ${item._id} and ${id}`); if (item._id === parseInt(id)){return true;} else{return false;}});
-  if (indexToRemove < 0)
-  {
+  let indexToRemove = activeProject._todos.findIndex((item) => { console.log(`Comparing: ${item._id} and ${id}`); if (item._id === parseInt(id)) { return true; } else { return false; } });
+  if (indexToRemove < 0) {
     console.log(`Not Found`);
     return;
   }
@@ -259,4 +267,25 @@ function deleteToDo(id){
 
   //Update the inbox
   updateInbox();
+}
+
+function deleteProject(id) {
+  console.log(`Deleting Project of ID: ${id}`);
+  //Find the index of the Project with the specified ID
+  console.log(`Before: `)
+  console.log(projects);
+  let indexToRemove = projects.findIndex((item) => { console.log(`Comparing: ${item._id} and ${id}`); if (item._id === parseInt(id)) { return true; } else { return false; } });
+  if (indexToRemove < 0) {
+    console.log(`Not Found`);
+    return;
+  }
+
+  console.log(`Found at index of ${indexToRemove}`);
+  //Remove it
+  projects.splice(indexToRemove, 1);
+  console.log(`After: `)
+  console.log(projects);
+
+  //Update the Navbar
+  updateNavbar();
 }

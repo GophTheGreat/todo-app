@@ -6,7 +6,7 @@ import './style.css'
 export let date = new Date();
 export let nextProjectID = 0;
 export let projects = [];
-export let activeProject = makeProject("Default", "10");
+export let activeProject;
 
 export let nextToDoID = 0;
 
@@ -19,7 +19,7 @@ function init(){
 
 
   DOM_INITIALIZE();
-  projects.push(activeProject);
+  activeProject = makeProject("Default", 10);
 }
 
 init();
