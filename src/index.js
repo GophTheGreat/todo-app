@@ -1,4 +1,4 @@
-import { DOM_INITIALIZE } from './modules/domevents';
+import { DOM_INITIALIZE, updateNavbar, updateInbox } from './modules/domevents';
 import { updateRangeDisplay } from './modules/domevents';
 import { makeProject } from './modules/project';
 import './style.css'
@@ -19,7 +19,8 @@ function init(){
 
 
   DOM_INITIALIZE();
-  activeProject = makeProject("Default", 10);
+  setActiveProject(makeProject("Default", 10));
+  updateNavbar();
 }
 
 init();
@@ -30,4 +31,10 @@ export function incrementNextProjectID(){
 
 export function incrementNextToDoID(){
   nextToDoID++;
+}
+
+export function setActiveProject(project){
+  activeProject = project;
+  updateNavbar();
+  updateInbox();
 }

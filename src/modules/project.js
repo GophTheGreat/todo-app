@@ -27,8 +27,8 @@ export function makeProject (title, priority){
 
   console.log("adding project")
   console.log(project);
-  addToNavbar(project);
   projects.push(project);
   incrementNextProjectID();
+  addToNavbar(project);
   return(project);
 }

@@ -4,6 +4,7 @@ import { makeToDo } from './todo';
 import { activeProject } from '../index'
 import { date } from '../index'
 import { projects } from '../index'
+import {setActiveProject} from '../index'
 
 console.log('hi');
 
@@ -12,6 +13,8 @@ export function addToNavbar(project) {
   console.log("Adding project to navbar");
   let projectDiv = document.createElement("div")
   projectDiv.id = project._title;
+  projectDiv.addEventListener("click", function() { setActiveProject(project) });
+  projectDiv.className = "projectDiv";
 
   let title = document.createElement("div")
   title.innerHTML = project._title;
@@ -29,7 +32,13 @@ export function addToNavbar(project) {
   deleteButton.setAttribute("data-project-id", `${project._id}`);
   deleteButton.addEventListener("click", function () { deleteProject(this.getAttribute("data-project-id")) });
   navBar.appendChild(deleteButton);
+
 }
+
+// function setActiveProject(id){
+//   activeProject = projects.findIndex((item) => { console.log(`Comparing: ${item._id} and ${id}`); if (item._id === parseInt(id)) { return true; } else { return false; } });
+
+// }
 
 export function addToInbox(todo) {
   //create divs for all ToDo pieces
@@ -177,7 +186,7 @@ function showToDoForm() {
   inbox.appendChild(form);
 }
 
-function updateInbox() {
+export function updateInbox() {
   let inbox = document.getElementById("inbox");
 
   //Clear the inbox first
@@ -208,7 +217,7 @@ function createAddToDoButton() {
   return buttonContainer;
 }
 
-function updateNavbar() {
+export function updateNavbar() {
   let navbar = document.getElementById("navbar");
 
   //Clear the inbox first
@@ -218,10 +227,28 @@ function updateNavbar() {
 
   //Populate all the projects
   projects.forEach((element) => { addToNavbar(element) });
-  console.log("Sentences" + projects);
+  console.log(projects);
+
+  //Set new active div
+  updateActiveDiv();
 
   //Paint the 'New' button and give it a function
   navbar.appendChild(createAddProjectButton());
+}
+
+function updateActiveDiv(){
+  let activeDiv = document.getElementsByClassName("activeDiv");
+  if(activeDiv.length > 0){
+    activeDiv[0].classList.remove("activeDiv");
+  }
+
+  activeDiv = document.getElementById(activeProject._title);
+  //Paint a new active div using the active project
+  console.log("Setting new active div")
+  console.log(activeProject);
+  console.log(activeProject._title);
+
+  activeDiv.classList.add("activeDiv");
 }
 
 function createAddProjectButton() {
