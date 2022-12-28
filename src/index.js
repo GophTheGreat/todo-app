@@ -19,7 +19,16 @@ function init(){
 
 
   DOM_INITIALIZE();
-  setActiveProject(makeProject("Default", 10));
+  if(!localStorage.getItem('savedProjects')) {
+   setActiveProject(makeProject("Default", 10));
+   console.log("Fresh Project!")
+  }
+  else {
+    console.log("Pulling from storage!")
+    console.log(localStorage.getItem('savedProjects'))
+    projects = JSON.parse(localStorage.getItem('savedProjects'));
+    setActiveProject(projects[0]);
+  }
   updateNavbar();
 }
 

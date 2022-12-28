@@ -5,8 +5,10 @@ import { activeProject } from '../index'
 import { date } from '../index'
 import { projects } from '../index'
 import {setActiveProject} from '../index'
+import { save } from './storage';
 
 console.log('hi');
+
 
 export function addToNavbar(project) {
   //create divs for all project pieces
@@ -32,13 +34,7 @@ export function addToNavbar(project) {
   deleteButton.setAttribute("data-project-id", `${project._id}`);
   deleteButton.addEventListener("click", function () { deleteProject(this.getAttribute("data-project-id")) });
   navBar.appendChild(deleteButton);
-
 }
-
-// function setActiveProject(id){
-//   activeProject = projects.findIndex((item) => { console.log(`Comparing: ${item._id} and ${id}`); if (item._id === parseInt(id)) { return true; } else { return false; } });
-
-// }
 
 export function addToInbox(todo) {
   //create divs for all ToDo pieces
@@ -294,6 +290,7 @@ function deleteToDo(id) {
 
   //Update the inbox
   updateInbox();
+  save();
 }
 
 function deleteProject(id) {
@@ -315,4 +312,5 @@ function deleteProject(id) {
 
   //Update the Navbar
   updateNavbar();
+  save();
 }

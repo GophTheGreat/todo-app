@@ -1,6 +1,7 @@
 import { addToNavbar } from './domevents';
 import { incrementNextProjectID, incrementNextToDoID, nextProjectID, projects } from '../index';
 import { ToDo } from './todo';
+import { save } from './storage';
 
 export class Project{
   constructor(title, priority){
@@ -18,6 +19,8 @@ Project.prototype.makeToDo = function(title, description, dueDate, priority, not
   console.log(toDo);
   this._todos.push(toDo);
   incrementNextToDoID();
+
+  save();
 }
 
 export function makeProject (title, priority){  
@@ -30,5 +33,6 @@ export function makeProject (title, priority){
   projects.push(project);
   incrementNextProjectID();
   addToNavbar(project);
+  save();
   return(project);
 }
