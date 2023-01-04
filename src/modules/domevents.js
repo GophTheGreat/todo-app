@@ -6,6 +6,7 @@ import { date } from '../index'
 import { projects } from '../index'
 import {setActiveProject} from '../index'
 import { save } from './storage';
+import { comparePriority } from './sort';
 
 console.log('hi');
 
@@ -147,6 +148,12 @@ function showToDoForm() {
   let form = document.createElement("form");
   let defaultDate = date.getDay();
 
+  console.log("Active project is: ");
+  console.log(activeProject);
+  console.log(Object.getOwnPropertyNames(activeProject));
+  console.log(Project.prototype);
+  console.log(activeProject.__proto__);
+
   form.innerHTML = `
     <h2>New Project</h2>
     <label for="title">Title<label>
@@ -184,6 +191,7 @@ function showToDoForm() {
 
 export function updateInbox() {
   let inbox = document.getElementById("inbox");
+  activeProject._todos.sort(comparePriority);
 
   //Clear the inbox first
   while (inbox.firstChild) {
@@ -214,6 +222,8 @@ function createAddToDoButton() {
 }
 
 export function updateNavbar() {
+  projects.sort(comparePriority);
+
   let navbar = document.getElementById("navbar");
 
   //Clear the inbox first
