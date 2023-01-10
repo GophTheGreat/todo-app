@@ -38,22 +38,36 @@ export function addToNavbar(project) {
 }
 
 export function addToInbox(todo) {
+  let inbox = document.getElementById("inbox")
+
   //create divs for all ToDo pieces
-  //constructor(title, description, dueDate, priority, notes, isChecklist){
   console.log("Adding ToDo to inbox");
   let todoDiv = document.createElement("div")
   todoDiv.id = todo._title;
+  todoDiv.className = "todoDiv";
+  todoDiv.classList.add(`priority${todo._priority}`);
+
+  let deleteButton = document.createElement("button")
+  deleteButton.className = "deleteButton";
+  deleteButton.setAttribute("data-ToDo-id", `${todo._id}`);
+  deleteButton.addEventListener("click", function () { deleteToDo(this.getAttribute("data-ToDo-id")) });
+  todoDiv.appendChild(deleteButton);
 
   let title = document.createElement("div")
   title.innerHTML = todo._title;
+  title.classList = "todoTitle";
   todoDiv.appendChild(title);
 
-  let description = document.createElement("div")
-  description.innerHTML = todo._description;
-  todoDiv.appendChild(description);
+  if(todo._description){
+    let description = document.createElement("div")
+    description.innerHTML = todo._description;
+    todoDiv.appendChild(description);
+  }
+
 
   let dueDate = document.createElement("div")
   dueDate.innerHTML = todo._dueDate;
+  dueDate.classList = "todoDueDate";
   todoDiv.appendChild(dueDate);
 
   let priority = document.createElement("div")
@@ -64,18 +78,7 @@ export function addToInbox(todo) {
   notes.innerHTML = todo._notes;
   todoDiv.appendChild(notes);
 
-  let isCheckList = document.createElement("div")
-  isCheckList.innerHTML = todo._isCheckList;
-  todoDiv.appendChild(isCheckList);
-
-  let inbox = document.getElementById("inbox")
   inbox.appendChild(todoDiv);
-
-  let deleteButton = document.createElement("button")
-  deleteButton.className = "deleteButton";
-  deleteButton.setAttribute("data-ToDo-id", `${todo._id}`);
-  deleteButton.addEventListener("click", function () { deleteToDo(this.getAttribute("data-ToDo-id")) });
-  inbox.appendChild(deleteButton);
 }
 
 export const DOM_INITIALIZE = () => {
@@ -121,7 +124,7 @@ function showProjectForm() {
   priority.type = "range";
   priority.min = "1";
   priority.max = "10";
-  priority.value = "10";
+  priority.value = "5";
   priority.setAttribute("onchange", "updateRangeDisplay()");
   console.log(priority);
   form.appendChild(priority);
@@ -166,8 +169,6 @@ function showToDoForm() {
     <input type="number" name="priority" id="todoPriority" value="10">
     <label for="notes">Notes</label>
     <input type="text" name="notes" id="todoNotes">
-    <label for="isChecklist">Is this a checklist?</label>
-    <input type="checkbox" name="isCheckList" id="todoChecklist">
   `
 
   let submitToDo = document.createElement("button");
@@ -175,11 +176,10 @@ function showToDoForm() {
   submitToDo.innerHTML = "Submit";
   submitToDo.addEventListener("click", function () {
     activeProject.makeToDo(document.getElementById("todoTitle").value,
-      document.getElementById("todoDescription").value,
-      document.getElementById("todoDueDate").value,
-      document.getElementById("todoPriority").value,
-      document.getElementById("todoNotes").value,
-      document.getElementById("todoChecklist").value); console.log("submitted")
+    document.getElementById("todoDescription").value,
+    document.getElementById("todoDueDate").value,
+    document.getElementById("todoPriority").value,
+    document.getElementById("todoNotes").value);
   });
   submitToDo.addEventListener("click", function () { removeForm(form) });
   submitToDo.addEventListener("click", updateInbox);
@@ -244,6 +244,12 @@ export function updateNavbar() {
 
 function updateActiveDiv(){
   let activeDiv = document.getElementsByClassName("activeDiv");
+  if(!activeDiv){
+    activeDiv = document.getElementById(activeProject._title);
+    activeDiv.classList.add("activeDiv");
+    return;
+  }
+
   if(activeDiv.length > 0){
     activeDiv[0].classList.remove("activeDiv");
   }
@@ -308,6 +314,8 @@ function deleteProject(id) {
   //Find the index of the Project with the specified ID
   console.log(`Before: `)
   console.log(projects);
+  console.log(`Before Active Project: `)
+  console.log(activeProject);
   let indexToRemove = projects.findIndex((item) => { console.log(`Comparing: ${item._id} and ${id}`); if (item._id === parseInt(id)) { return true; } else { return false; } });
   if (indexToRemove < 0) {
     console.log(`Not Found`);
@@ -319,8 +327,21 @@ function deleteProject(id) {
   projects.splice(indexToRemove, 1);
   console.log(`After: `)
   console.log(projects);
+  console.log(`After Active Project: `)
+  console.log(activeProject);
+  console.log(id);
+
+  console.log(`Comparing ${activeProject._id} and ${id}`);
+
+  if (parseInt(activeProject._id) === parseInt(id)){
+    console.log("setting new activeProject")
+    setActiveProject(projects[0]);
+    updateActiveDiv();
+  }
 
   //Update the Navbar
   updateNavbar();
   save();
+
+
 }
