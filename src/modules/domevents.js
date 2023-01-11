@@ -175,7 +175,8 @@ function showToDoForm() {
   submitToDo.type = "button";
   submitToDo.innerHTML = "Submit";
   submitToDo.addEventListener("click", function () {
-    activeProject.makeToDo(document.getElementById("todoTitle").value,
+    makeToDo(activeProject._id, 
+    document.getElementById("todoTitle").value,
     document.getElementById("todoDescription").value,
     document.getElementById("todoDueDate").value,
     document.getElementById("todoPriority").value,
@@ -309,6 +310,15 @@ function deleteToDo(id) {
   save();
 }
 
+export function findProject(id){
+  let index = projects.findIndex((item) => { console.log(`Comparing: ${item._id} and ${id}`); if (item._id === parseInt(id)) { return true; } else { return false; } });
+  if (index < 0) {
+    console.log(`Not Found`);
+    return null;
+  }
+  return index;
+}
+
 function deleteProject(id) {
   console.log(`Deleting Project of ID: ${id}`);
   //Find the index of the Project with the specified ID
@@ -316,9 +326,9 @@ function deleteProject(id) {
   console.log(projects);
   console.log(`Before Active Project: `)
   console.log(activeProject);
-  let indexToRemove = projects.findIndex((item) => { console.log(`Comparing: ${item._id} and ${id}`); if (item._id === parseInt(id)) { return true; } else { return false; } });
-  if (indexToRemove < 0) {
-    console.log(`Not Found`);
+
+  let indexToRemove = findProject(id);
+  if (indexToRemove == null){
     return;
   }
 

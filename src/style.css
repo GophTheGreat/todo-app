@@ -47,6 +47,7 @@ body{
   color: white;
   display: grid;
   grid-template-rows: repeat(auto-fill, 20px);
+  grid-template-columns: 90% 10%;
   row-gap: 10px;
   padding-top: 10px;
 }
@@ -97,11 +98,12 @@ body{
   background-image: url('../assets/minus.svg');
   filter: invert(33%) sepia(83%) saturate(1336%) hue-rotate(325deg) brightness(94%) contrast(89%);
   background-repeat: no-repeat;
-  background-size: 15px 15px;
+  background-size: 30px 30px;
   background-position: center;
-  height: 20px;  
-  width: 5%;
-  border-radius: 20px;
+  height: 30px;  
+  width: 30px;
+  margin: 5px;
+  border: none;
   background-color: rgba(0, 0, 0, 0)
 }
 
@@ -118,7 +120,8 @@ body{
   width: 20%;
   border-radius: 20px;
   border: none;
-  background-color: rgba(0, 0, 0, 0)
+  background-color: rgba(0, 0, 0, 0);
+  margin: 5px;
 }
 
 .projectDiv{
@@ -146,6 +149,7 @@ body{
 .todoDiv > div{
   grid-column: span 2;
   color: white; 
+  margin: 10px;
 }
 
 .todoTitle{
