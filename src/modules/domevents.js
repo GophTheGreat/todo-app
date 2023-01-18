@@ -18,13 +18,16 @@ export function addToNavbar(project) {
   projectDiv.id = project._title;
   projectDiv.addEventListener("click", function() { setActiveProject(project) });
   projectDiv.className = "projectDiv";
+  projectDiv.classList.add(`priority${project._priority}`);
 
   let title = document.createElement("div")
-  title.innerHTML = project._title;
+  title.innerHTML = `Project: ${project._title}`;
+  title.style.fontWeight = "bold";
+  title.style.fontSize = "15px";
   projectDiv.appendChild(title);
 
   let priority = document.createElement("div")
-  priority.innerHTML = project._priority;
+  priority.innerHTML = "Priority: " + project._priority;
   projectDiv.appendChild(priority);
 
   let navBar = document.getElementById("navbar")
@@ -42,6 +45,7 @@ export function addToInbox(todo) {
 
   //create divs for all ToDo pieces
   console.log("Adding ToDo to inbox");
+  console.log(todo);
   let todoDiv = document.createElement("div")
   todoDiv.id = todo._title;
   todoDiv.className = "todoDiv";
@@ -58,12 +62,11 @@ export function addToInbox(todo) {
   title.classList = "todoTitle";
   todoDiv.appendChild(title);
 
-  if(todo._description){
+  if(todo._description != ""){
     let description = document.createElement("div")
     description.innerHTML = todo._description;
     todoDiv.appendChild(description);
   }
-
 
   let dueDate = document.createElement("div")
   dueDate.innerHTML = todo._dueDate;
@@ -102,6 +105,8 @@ export const DOM_INITIALIZE = () => {
 
 function showProjectForm() {
   let form = document.createElement("form");
+  form.className = "projectForm";
+  form.style.height = "fit-content"
 
   let header = document.createElement("h2");
   header.innerHTML = "New Project";
@@ -113,19 +118,27 @@ function showProjectForm() {
   form.appendChild(titleLabel)
   let title = document.createElement("input");
   title.type = "text";
+  title.size = '15';
   form.appendChild(title);
 
   let priorityLabel = document.createElement("label")
-  priorityLabel.innerHTML = "priority"
+  priorityLabel.innerHTML = "Priority:"
+  priorityLabel.style.fontWeight = "bold";
+  priorityLabel.style.fontSize = "15px";
+  priorityLabel.style.display = "flex";
+
+  let priorityLabel2 = document.createElement("label")
+  priorityLabel2.innerHTML = "(Lower = More Urgent)"
   priorityLabel.setAttribute("for", "priority");
   form.appendChild(priorityLabel)
+  form.appendChild(priorityLabel2)
   let priority = document.createElement("input");
   priority.id = "priority"
   priority.type = "range";
   priority.min = "1";
   priority.max = "10";
   priority.value = "5";
-  priority.setAttribute("onchange", "updateRangeDisplay()");
+  priority.setAttribute("oninput", "updateRangeDisplay()");
   console.log(priority);
   form.appendChild(priority);
   let priorityDisplay = document.createElement("label")
@@ -207,6 +220,10 @@ export function updateInbox() {
   inbox.appendChild(createAddToDoButton());
 }
 
+function removeElement(element){
+  element.remove();
+}
+
 function createAddToDoButton() {
   console.log("creating addToDo button")
   let buttonContainer = document.createElement("div");
@@ -216,6 +233,12 @@ function createAddToDoButton() {
   button.id = "addToDo";
   button.addEventListener("click", () => {
     showToDoForm();
+  });
+  button.addEventListener("click", () => {
+    removeElement(button);
+  });
+  button.addEventListener("click", () => {
+    removeElement(buttonContainer);
   });
 
   buttonContainer.appendChild(button);
@@ -272,6 +295,12 @@ function createAddProjectButton() {
   button.id = "addProject";
   button.addEventListener("click", () => {
     showProjectForm();
+  });
+  button.addEventListener("click", () => {
+    removeElement(button);
+  });
+  button.addEventListener("click", () => {
+    removeElement(buttonContainer);
   });
   buttonContainer.appendChild(button);
   return buttonContainer;

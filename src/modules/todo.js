@@ -6,8 +6,8 @@ export class ToDo{
   constructor(title, description, dueDate, priority, notes, isChecklist){
     this._title = title;
 
-    if(description){
-      this._decription = description;
+    if(description != ""){
+      this._description = description;
     }
     else{
       this._description = "";
